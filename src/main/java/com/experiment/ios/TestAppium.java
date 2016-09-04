@@ -2,6 +2,7 @@ package com.experiment.ios;
 
 import java.net.URL;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
@@ -52,7 +53,7 @@ public class TestAppium {
 		
 		do{
 		executor.executeScript(
-			    "target.frontMostApp().mainWindow().dragInsideWithOptions({startOffset:{x:0.5, y:0.8}, endOffset:{x:0.5, y:0.1}, duration:0.8});");
+			    "target.frontMostApp().mainWindow().dragInsideWithOptions({startOffset:{x:0.5, y:0.3}, endOffset:{x:0.5, y:0.1}, duration:0.1});");
 		}while(!lastElement.isDisplayed());
 		
 	}
@@ -86,12 +87,12 @@ public class TestAppium {
 		
 		do{
 		executor.executeScript(
-			    "target.frontMostApp().mainWindow().dragInsideWithOptions({startOffset:{x:0.5, y:0.8}, endOffset:{x:0.5, y:0.1}, duration:0.8});");
+			    "target.frontMostApp().mainWindow().dragInsideWithOptions({startOffset:{x:0.5, y:0.3}, endOffset:{x:0.5, y:0.1}, duration:0.1});");
 		}while(!lastElement.isDisplayed());
 		
 		do{
 			executor.executeScript(
-				    "target.frontMostApp().mainWindow().dragInsideWithOptions({startOffset:{x:0.5, y:0.1}, endOffset:{x:0.5, y:0.8}, duration:0.8});");
+				    "target.frontMostApp().mainWindow().dragInsideWithOptions({startOffset:{x:0.5, y:0.1}, endOffset:{x:0.5, y:0.3}, duration:0.1});");
 			}while(!shareButton.isDisplayed());	
 	}
 	
@@ -145,8 +146,31 @@ public class TestAppium {
     		  
     	  } else if ((options.getAttribute("name").equalsIgnoreCase("Privacy notice")) && (options.isDisplayed())){
     		  
-    		  System.out.println("Privacy notice is displayed");
-    		  state = true;
+    		  options.click();
+    		  
+    		  //Add wait for Element
+    		  DRIVER.manage().timeouts().implicitlyWait(3, TimeUnit.SECONDS);
+    		  
+    		  WebElement SkyProvacyPolicy = DRIVER.findElement(By.xpath("//UIAApplication[1]/UIAWindow[1]/UIAElement[5]/UIAScrollView[1]/UIAWebView[1]/UIAStaticText[13]"));
+    		  
+    		  if(!SkyProvacyPolicy.isDisplayed()){
+    			  
+    			  JavascriptExecutor executor = DRIVER;
+    			  
+    			  do{
+    					executor.executeScript(
+    						    "target.frontMostApp().mainWindow().dragInsideWithOptions({startOffset:{x:0.5, y:0.3}, endOffset:{x:0.5, y:0.1}, duration:0.1});");
+    					}while(!SkyProvacyPolicy.isDisplayed());
+    			  
+    			  if(SkyProvacyPolicy.isDisplayed()){
+    				  System.out.println("Sky Privacy policy is displayed");
+    				  state = true;
+    			  } else if (!SkyProvacyPolicy.isDisplayed()){
+    				  state = false;
+    				  return state;
+    			  } 
+    		  }
+    	
     		  
     	  } else if ((options.getAttribute("name").equalsIgnoreCase("Clear Digest Cache")) && (options.isDisplayed())){
     		  
