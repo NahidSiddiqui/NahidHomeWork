@@ -17,7 +17,7 @@ public class TestAppium {
    public static AppiumDriver<?>DRIVER;
 	
 	public static void main(String[] args) throws Exception{	
-		swipeOnTermsConditions();
+		clickTest();
 	}
 	
 	public static void swipeOnTermsConditions() throws Exception{
@@ -189,7 +189,40 @@ public class TestAppium {
 		
 	}
 	
-	
-	
+	public static void clickTest() throws Exception{
+		
+		DesiredCapabilities capability = new DesiredCapabilities();
+		capability.setCapability("platformName", "iOS");
+		capability.setCapability("platformVersion", "9.3");
+		capability.setCapability("deviceName", "iPhone 6");
+		capability.setCapability("autoAcceptAlerts","true");
+		capability.setCapability("app", "/Users/amayah/Library/Developer/Xcode/DerivedData/SkyNews-dngspbiskonxxudlllqsjqibpnvl/Build/Products/Debug-Dev-iphonesimulator/SkyNewsDev.app");
+		
+		DRIVER = new IOSDriver<WebElement>(new URL("http://0.0.0.0:4723/wd/hub"), capability);  
+		
+		String text = "EE Fined Â£1m For Customer Complaint Failures";
+		
+		WebElement carItem = DRIVER.findElement(By.id("Business"));
+		
+		carItem.click();
+		
+		String text2 = text.replaceAll("([^\\p{L}\\p{N}])", "");
+		
+         List<WebElement>storyList = (List<WebElement>) DRIVER.findElements(By.xpath("//UIAApplication[1]/UIAWindow[1]/UIAScrollView[1]/UIATableView[1]/*"));
+		
+		System.out.println(storyList.size());
+		
+		System.out.println(text2);
+		
+	 for (WebElement story:storyList ){
+		 System.out.println(story.getAttribute("name").toString().replaceAll("([^\\p{L}\\p{N}])", ""));
+		if(story.getAttribute("name").toString().replaceAll("([^\\p{L}\\p{N}])", "").equalsIgnoreCase(text2)){
+			System.out.println("in if");
+			story.click();
+			break;
+		}
+		
+	 }
 
+}
 }
