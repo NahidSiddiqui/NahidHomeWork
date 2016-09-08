@@ -17,7 +17,7 @@ public class TestAppium {
    public static AppiumDriver<?>DRIVER;
 	
 	public static void main(String[] args) throws Exception{	
-		clickTest();
+		verifyTimeOutBrain();
 	}
 	
 	public static void swipeOnTermsConditions() throws Exception{
@@ -225,4 +225,49 @@ public class TestAppium {
 	 }
 
 }
+	
+	public static void verifyTimeOutBrain() throws Exception{
+		
+		DesiredCapabilities capability = new DesiredCapabilities();
+		capability.setCapability("platformName", "iOS");
+		capability.setCapability("platformVersion", "9.3");
+		capability.setCapability("deviceName", "iPhone 6");
+		capability.setCapability("autoAcceptAlerts","true");
+		capability.setCapability("app", "/Users/amayah/Library/Developer/Xcode/DerivedData/SkyNews-dngspbiskonxxudlllqsjqibpnvl/Build/Products/Debug-Dev-iphonesimulator/SkyNewsDev.app");
+		
+		DRIVER = new IOSDriver<WebElement>(new URL("http://0.0.0.0:4723/wd/hub"), capability);  
+		
+		WebElement story = DRIVER.findElement(By.id("Apple Changes Tune After Swift Speaks Out"));
+		
+		story.click();
+		
+		//List<WebElement>list = (List<WebElement>) DRIVER.findElements(By.xpath("//*/UIATableView[@name = 'Story Level Table']/*"));
+		
+		Thread.sleep(3000);
+		
+		WebElement outbrain = DRIVER.findElement(By.id("OutbrainLogo"));
+		
+		WebElement promotedStories = DRIVER.findElement(By.id("Promoted Stories"));
+	
+		if (promotedStories==null){
+			
+		}else if (promotedStories!=null){
+			System.out.println("Promoted stories are present");
+		}
+		
+		while(!promotedStories.isDisplayed()) {
+			
+			JavascriptExecutor executor = DRIVER;						
+					executor.executeScript(
+						    "target.frontMostApp().mainWindow().dragInsideWithOptions({startOffset:{x:0.5, y:0.5}, endOffset:{x:0.5, y:0.4}, duration:0.1});");
+		}	
+		
+         if (outbrain.isDisplayed()){
+        	 System.out.println("Outbrain logo is displayed");
+        	 outbrain.click();
+		}else if (!outbrain.isDisplayed()){
+			System.out.println("Outbrain logo is displayed");
+		}
+	
+    }
 }
