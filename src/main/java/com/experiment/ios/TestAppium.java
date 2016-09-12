@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.Dimension;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.remote.DesiredCapabilities;
@@ -17,7 +18,7 @@ public class TestAppium {
    public static AppiumDriver<?>DRIVER;
 	
 	public static void main(String[] args) throws Exception{	
-		verifyTimeOutBrain();
+		swipeOnTermsConditions();
 	}
 	
 	public static void swipeOnTermsConditions() throws Exception{
@@ -49,12 +50,46 @@ public class TestAppium {
 		
 		//System.out.println(lastElement.);
 		
-		JavascriptExecutor executor = DRIVER;
+		Dimension screen = DRIVER.manage().window().getSize();
 		
-		do{
-		executor.executeScript(
-			    "target.frontMostApp().mainWindow().dragInsideWithOptions({startOffset:{x:0.5, y:0.3}, endOffset:{x:0.5, y:0.1}, duration:0.1});");
-		}while(!lastElement.isDisplayed());
+		int ycord = lastElement.getLocation().getY();
+		
+		System.out.println(ycord);
+		
+		int startx = (screen.width)/2;
+		
+		int starty = (screen.height)/2;
+		
+		System.out.println(starty);
+		
+		int endy = (int) (starty - (0.34*(screen.height)));
+		
+		int n = (int)((ycord - starty)/starty);
+		
+		System.out.println(n);
+		
+		int i = 0;
+		
+		while(i!=n){
+			
+		i = i + 1;
+		
+		DRIVER.swipe(startx,starty,startx,endy,1);
+		
+		System.out.println(i);
+		
+		}
+		
+		if(lastElement.isDisplayed()){
+			System.out.println("Can see end of page");
+		}
+		
+		//JavascriptExecutor executor = DRIVER;
+		
+		//do{
+		//executor.executeScript(
+		//	    "target.frontMostApp().mainWindow().dragInsideWithOptions({startOffset:{x:0.5, y:0.3}, endOffset:{x:0.5, y:0.1}, duration:0.1});");
+		//}while(!lastElement.isDisplayed());
 		
 	}
 	
@@ -270,4 +305,33 @@ public class TestAppium {
 		}
 	
     }
+	
+	public static void scrollToElement() throws Exception{
+		
+		DesiredCapabilities capability = new DesiredCapabilities();
+		capability.setCapability("platformName", "iOS");
+		capability.setCapability("platformVersion", "9.3");
+		capability.setCapability("deviceName", "iPhone 6");
+		capability.setCapability("autoAcceptAlerts","true");
+		capability.setCapability("app", "/Users/amayah/Library/Developer/Xcode/DerivedData/SkyNews-dngspbiskonxxudlllqsjqibpnvl/Build/Products/Debug-Dev-iphonesimulator/SkyNewsDev.app");
+		
+		DRIVER = new IOSDriver<WebElement>(new URL("http://0.0.0.0:4723/wd/hub"), capability);  
+		
+		WebElement story = DRIVER.findElement(By.id("Apple Changes Tune After Swift Speaks Out"));
+		
+		story.click();
+		
+		
+		story.isDisplayed();
+		
+		WebElement promotedStories = DRIVER.findElement(By.id("Promoted Stories"));
+		
+		System.out.println(story.getLocation());
+		
+		System.out.println(promotedStories.getLocation());
+		
+		DRIVER.swipe(0, 0, 0, 2893, 3);
+		
+		
+	}
 }
